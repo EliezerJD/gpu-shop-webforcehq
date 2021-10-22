@@ -9,7 +9,8 @@
         <div class="info pt-xl-0 pt-lg-0 pt-5">
           <h1 class="font-weight-bold text-uppercase pt-3">{{ it.title }}</h1>
           <h4>${{ it.price }} USD</h4>
-          <br><br><br>
+          <p>{{ it.desc }}</p>
+          <br><br>
           <div class="control number text-center">
             <button class="decrement-button" @click="dec" style="border-right: 0.2px solid lightgrey;float:left;margin-right: 11px;">−</button>
             <span>{{ quan }}</span>

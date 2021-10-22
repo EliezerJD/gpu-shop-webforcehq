@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    infoPage:[],
+    dataInfo:[],
     cartItems:[],
     items: [
       {
@@ -13,6 +13,7 @@ export default new Vuex.Store({
         img: require('../../assets/rtx-3090-500.jpg').default,
         title: 'EVGA RTX 3090',
         price: 3000,
+        desc: 'Descripcion corta',
         type: 'RTX'
 
       },
@@ -21,6 +22,7 @@ export default new Vuex.Store({
         img: require('../../assets/Gtx-1660S-500.jpg').default,
         title: 'GTX 1660S',
         price: 500,
+        desc: 'Descripcion corta',
         type: 'GTX'
       },
       {
@@ -28,6 +30,7 @@ export default new Vuex.Store({
         img: require('../../assets/QUADRO-4000-500.jpg').default,
         title: 'PNY Quadro 4000',
         price: 1000,
+        desc: 'Descripcion corta',
         type: 'Quadro'
       },
       {
@@ -35,6 +38,7 @@ export default new Vuex.Store({
         img: require('../../assets/rtx-3080-500.jpg').default,
         title: 'ZOTAC RTX 3080',
         price: 2300,
+        desc: 'Descripcion corta',
         type: 'RTX'
       },
       {
@@ -42,6 +46,7 @@ export default new Vuex.Store({
         img: require('../../assets/QUADRO-8000-500.png').default,
         title: 'NVIDIA Quadro 8000',
         price: 2500,
+        desc: 'Descripcion corta',
         type: 'Quadro'
       },
       {
@@ -49,6 +54,7 @@ export default new Vuex.Store({
         img: require('../../assets/GTX-1070-500.jpg').default,
         title: 'GIGABYTE GTX 1070',
         price: 500,
+        desc: 'Descripcion corta',
         type: 'GTX'
       },
     ]
@@ -66,8 +72,8 @@ export default new Vuex.Store({
       }
     },
     infoLength(state) { // Info Component
-      if(state.infoPage.length > 0) {
-        return state.infoPage.splice(0, 1)
+      if(state.dataInfo.length > 0) {
+        return state.dataInfo.splice(0, 1)
       }
     }
   },
@@ -80,7 +86,7 @@ export default new Vuex.Store({
       return state.cartItems.splice(index, 1)
     },
     addtoInfo(state, n) { // Info Component
-       return state.infoPage.push(n)
+       return state.dataInfo.push(n)
     }
   },
 })

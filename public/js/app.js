@@ -2392,6 +2392,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['information'],
   name: 'InfoBox',
@@ -2776,10 +2777,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
- //import InfoText from '@/Components/InfoPage/InfoText.vue'
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2796,11 +2794,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.information = this.infO;
-    this.relatedItems = this.bringItems;
+    this.information = this.info;
+
+    if (this.information != null) {
+      this.relatedItems = this.bringItems;
+    } else {
+      console.log('retornar a productos');
+    }
   },
   computed: {
-    infO: function infO() {
+    info: function info() {
       return this.$store.getters.infoLength;
     },
     bringItems: function bringItems() {
@@ -2983,43 +2986,49 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
-    infoPage: [],
+    dataInfo: [],
     cartItems: [],
     items: [{
       id: 0,
       img: __webpack_require__(/*! ../../assets/rtx-3090-500.jpg */ "./resources/assets/rtx-3090-500.jpg")["default"],
       title: 'EVGA RTX 3090',
       price: 3000,
+      desc: 'Descripcion corta',
       type: 'RTX'
     }, {
       id: 1,
       img: __webpack_require__(/*! ../../assets/Gtx-1660S-500.jpg */ "./resources/assets/Gtx-1660S-500.jpg")["default"],
       title: 'GTX 1660S',
       price: 500,
+      desc: 'Descripcion corta',
       type: 'GTX'
     }, {
       id: 2,
       img: __webpack_require__(/*! ../../assets/QUADRO-4000-500.jpg */ "./resources/assets/QUADRO-4000-500.jpg")["default"],
       title: 'PNY Quadro 4000',
       price: 1000,
+      desc: 'Descripcion corta',
       type: 'Quadro'
     }, {
       id: 3,
       img: __webpack_require__(/*! ../../assets/rtx-3080-500.jpg */ "./resources/assets/rtx-3080-500.jpg")["default"],
       title: 'ZOTAC RTX 3080',
       price: 2300,
+      desc: 'Descripcion corta',
       type: 'RTX'
     }, {
       id: 4,
       img: __webpack_require__(/*! ../../assets/QUADRO-8000-500.png */ "./resources/assets/QUADRO-8000-500.png")["default"],
       title: 'NVIDIA Quadro 8000',
       price: 2500,
+      desc: 'Descripcion corta',
       type: 'Quadro'
     }, {
       id: 5,
       img: __webpack_require__(/*! ../../assets/GTX-1070-500.jpg */ "./resources/assets/GTX-1070-500.jpg")["default"],
       title: 'GIGABYTE GTX 1070',
       price: 500,
+      desc: 'Descripcion corta',
       type: 'GTX'
     }]
   },
@@ -3039,8 +3048,8 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
     },
     infoLength: function infoLength(state) {
       // Info Component
-      if (state.infoPage.length > 0) {
-        return state.infoPage.splice(0, 1);
+      if (state.dataInfo.length > 0) {
+        return state.dataInfo.splice(0, 1);
       }
     }
   },
@@ -3058,7 +3067,7 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
     },
     addtoInfo: function addtoInfo(state, n) {
       // Info Component
-      return state.infoPage.push(n);
+      return state.dataInfo.push(n);
     }
   }
 }));
@@ -41453,7 +41462,8 @@ var render = function() {
               _vm._v(" "),
               _c("h4", [_vm._v("$" + _vm._s(it.price) + " USD")]),
               _vm._v(" "),
-              _c("br"),
+              _c("p", [_vm._v(_vm._s(it.desc))]),
+              _vm._v(" "),
               _c("br"),
               _c("br"),
               _vm._v(" "),
@@ -42110,23 +42120,23 @@ var render = function() {
       _vm._v(" "),
       _c("ProductDetails", { attrs: { information: _vm.information } }),
       _vm._v(" "),
-      _vm._m(0)
+      _c(
+        "div",
+        { staticClass: "related-item" },
+        [
+          _c("hr"),
+          _vm._v(" "),
+          _c("h6", { staticClass: "pb-4" }, [_vm._v("RELATED PRODUCTS")]),
+          _vm._v(" "),
+          _c("MoreProducts", { attrs: { CardArray: _vm.sliceRelatedItems } })
+        ],
+        1
+      )
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "related-item" }, [
-      _c("hr"),
-      _vm._v(" "),
-      _c("h6", { staticClass: "pb-4" }, [_vm._v("RELATED PRODUCTS")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

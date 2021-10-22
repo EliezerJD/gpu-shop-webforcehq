@@ -3,12 +3,10 @@
 
     <Title :information="information"/>
     <ProductDetails :information="information"/>
-    
-
     <div class="related-item">
       <hr>
       <h6 class="pb-4">RELATED PRODUCTS</h6>
-      
+      <MoreProducts :CardArray="sliceRelatedItems" />
     </div>
 
   </div>
@@ -17,7 +15,6 @@
 <script>
 import Title from '../components/InfoPage/Title.vue'
 import ProductDetails from '../components/InfoPage/ProductDetails.vue'
-//import InfoText from '@/Components/InfoPage/InfoText.vue'
 import MoreProducts from '../components/ProductsPage/Card.vue'
 
 
@@ -33,11 +30,17 @@ export default {
     }
   },
   created(){
-    this.information = this.infO
-    this.relatedItems = this.bringItems
+    this.information = this.info
+
+    if(this.information!= null){
+      this.relatedItems = this.bringItems
+    }else{
+      console.log('retornar a productos')
+    }
+    
     },
   computed: {
-    infO() {
+    info() {
       return this.$store.getters.infoLength
     },
     bringItems() {
