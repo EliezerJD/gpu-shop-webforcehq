@@ -12,23 +12,17 @@ class Order extends Model{
     protected $table = 'orders';
     protected $primaryKey = 'id';
 
-    protected $fillable = ['cart_id','total','user_id','order_key','shipping_address_id'];
+    protected $fillable = ['cart_id','total','user_id','shipping_address_id'];
 
-    public function shippingAddress(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
+    public function shippingAddress_id(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
         return $this->belongsTo(ShippingAddress::class,'shipping_address_id');
     }
 
-    public function cart(){
+    public function cart_id(){
         return $this->belongsTo(Cart::class,'cart_id');
     }
 
-    public function user(){
+    public function user_id(){
         return $this->belongsTo(User::class,'user_id');
     }
-
-    public function setOrderKeyAtrribute($cartId){
-        $this->attributes['order_key'] = uniqid().$cartId;
-    }
-
-
 }

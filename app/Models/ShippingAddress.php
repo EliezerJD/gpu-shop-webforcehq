@@ -12,5 +12,5 @@ class ShippingAddress extends Model
     protected $table = 'shipping_address';
     protected $primaryKey = 'id';
     protected $fillable = ['user_id'];
-    protected $fillable = ['address','state', 'country'];
+    protected $fillable = ['address','postal_code', 'state', 'country'];
 }
