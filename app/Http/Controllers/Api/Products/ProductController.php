@@ -14,17 +14,17 @@ class ProductController extends Controller{
         return $productService->getAll();
     }
 
-    public function sort(ProductService $productService): \App\Http\Resources\Products\ProductCollection{
-        return $productService->sort();
-    }
-
     public function store(ProductStoreRequest $request,ProductService $productService): \Illuminate\Http\JsonResponse{
         $validatedData = $request->validated();
         return $productService->store($validatedData);
     }
 
-    public function show(ProductService $productService,$id,$slug): \App\Http\Resources\Products\ProductResource{
+    public function show(ProductService $productService,$id): \App\Http\Resources\Products\ProductResource{
         return $productService->getOne($id);
+    }
+
+    public function showBySlug(ProductService $productService, $id, $slug): \App\Http\Resources\Products\ProductResource{
+        return $productService->getBySlug($id, $slug);
     }
 
     public function update(ProductUpdateRequest $request,ProductService $productService,$id): \Illuminate\Http\JsonResponse{

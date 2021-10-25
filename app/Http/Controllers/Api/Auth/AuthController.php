@@ -17,7 +17,7 @@ class AuthController extends Controller{
 
         if (Auth::attempt($credentials)){
              $user = Auth::user();
-             $success['token'] = $user->createToken('test_ecommerce')->accessToken;
+             $success['token'] = $user->createToken('user_token')->accessToken;
              $success['type']  = 'Bearer ';
              $success['user']  = $user;
             return response()->json(['token'=>$success]);
