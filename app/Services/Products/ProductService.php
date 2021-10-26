@@ -19,15 +19,8 @@ class ProductService implements Service{
         return new ProductCollection($products);
     }
 
-    public function getOne($id): ProductResource{
-        $product = Product::where(function ($result) use ($id){
-            if($id){
-                return $result->where('id', $id);
-            }else{
-                error_log('Some message here.');
-            }
-        })->first();
-
+    public function getOne($arg): ProductResource{
+        $product = Product::where('id', $arg)->orWhere('slug', $arg)->first();
         return new ProductResource($product);
     }
 

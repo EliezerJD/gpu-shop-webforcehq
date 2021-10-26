@@ -15,7 +15,7 @@ class ProductResource extends JsonResource{
             'description'=>$this->description,
             'image'=>$this->image,
             'routes'=>[
-                'self'=>route('products.show',$this)
+                'self'=>route('products.show',$this->slug)
             ]
         ];
     }

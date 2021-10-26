@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('auth/login',[\App\Http\Controllers\API\Auth\AuthController::class,'login']);
+Route::post('login',[\App\Http\Controllers\API\Auth\AuthController::class,'login']);
 
 Route::get('users',[\App\Http\Controllers\Api\Users\UserController::class,'index'])->name('users.index');
 Route::get('users/{id}',[\App\Http\Controllers\API\Users\UserController::class,'show'])->name('users.show');
 
-Route::get('products',[\App\Http\Controllers\API\Products\ProductController::class,'index']);
 
+Route::get('products',[\App\Http\Controllers\API\Products\ProductController::class,'index']);
 Route::get('products/{id}',[\App\Http\Controllers\API\Products\ProductController::class,'show'])->name('products.show');
 

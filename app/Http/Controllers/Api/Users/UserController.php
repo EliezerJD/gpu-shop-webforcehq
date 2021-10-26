@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller{
 
     public function index(UserService $userService): \App\Http\Resources\Users\UserCollection{
-        error_log('Some message here.');
         return $userService->getAll();
     }
 

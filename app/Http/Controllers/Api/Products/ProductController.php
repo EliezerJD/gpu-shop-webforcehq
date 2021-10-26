@@ -19,12 +19,8 @@ class ProductController extends Controller{
         return $productService->store($validatedData);
     }
 
-    public function show(ProductService $productService,$id): \App\Http\Resources\Products\ProductResource{
+    public function show(ProductService $productService, $id): \App\Http\Resources\Products\ProductResource{
         return $productService->getOne($id);
-    }
-
-    public function showBySlug(ProductService $productService, $id, $slug): \App\Http\Resources\Products\ProductResource{
-        return $productService->getBySlug($id, $slug);
     }
 
     public function update(ProductUpdateRequest $request,ProductService $productService,$id): \Illuminate\Http\JsonResponse{
