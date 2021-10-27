@@ -26,11 +26,18 @@
             <span class="mb-3" v-if="this.bagItemscount >= 0">{{ bagItemscount }}</span>
         </div>
         <div class="user">
-          <h5 style="cursor: pointer" data-toggle="modal" data-target="#userModal">Sign In</h5>
+          <h5 v-if="!userIsLogin" style="cursor: pointer" data-toggle="modal" data-target="#userModal">Sign In</h5>
+          
+          <div v-if="userIsLogin" class="dropdown">
+            <h5 class="dropdown-toggle user" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user}}</h5>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" @click="logout" >Logout</a>
+            </div>
+          </div>
         </div>
     </nav>
     <!--User Modal-->
-    <div class="modal fade" id="userModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div ref="modal" class="modal fade" id="userModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
@@ -69,6 +76,9 @@
 
 <script>
 import Cart from '../components/Cart.vue'
+import AuthService from '../services/auth';
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Header',
@@ -84,7 +94,14 @@ export default {
   computed: {
     bagItemscount() {
       return this.$store.getters.itemsNumber
-    }
+    },
+    userIsLogin(){
+      return this.$store.getters.isLogin;
+    },
+    user(){
+      //console.log("aca")
+      return this.$store.getters.getUser;
+    },
   },
   methods: {
     openCart() {
@@ -96,6 +113,23 @@ export default {
           email:this.email,
           password:this.password
         });
+        if(response.token){
+          this.$store.dispatch('saveDataUser',{
+            token:response.token,
+            user:response.user.name
+          });
+          this.$refs.modal.click();
+        }
+        
+      }catch (error) {
+        console.log(error);
+      }
+    },
+    async logout(){
+      try {
+        let response = await AuthService.logout();
+        this.$store.dispatch('deleteDataUser');
+          //this.$store.dispatch('cart/clearCart');
       }catch (error) {
         console.log(error);
       }
@@ -172,6 +206,7 @@ form .btn-xl.btn-success.mt-3 {
 .user{
   margin-right: 20px;
   padding-top: 10px;
+  cursor: pointer;
 }
 
 .user:hover {

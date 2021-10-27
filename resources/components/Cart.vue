@@ -55,7 +55,7 @@ export default {
   },
   computed:{
     cartContent(){
-      return this.$store.state.cartItems;
+      return this.$store.getters.itemsNumber;
     },
     cartPrice() {
       //return this.$store.getters.totalPrice

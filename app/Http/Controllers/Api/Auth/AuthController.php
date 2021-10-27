@@ -8,6 +8,7 @@ use App\Services\Users\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
+use Laravel\Passport\HasApiTokens;
 
 class AuthController extends Controller{
 
@@ -20,7 +21,7 @@ class AuthController extends Controller{
              $success['token'] = $user->createToken('user_token')->accessToken;
              $success['type']  = 'Bearer ';
              $success['user']  = $user;
-            return response()->json(['token'=>$success]);
+            return response()->json(['data_token'=>$success]);
         }else{
             return response()->json(['error'=>'Invalid credentials'],Response::HTTP_UNAUTHORIZED);
         }

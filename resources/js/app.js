@@ -4,7 +4,7 @@ import Vue from 'vue';
 
 import router from './routes/router';
 import App from "../views/App";
-import store from './store/shoppingCart';
+import store from './store/main';
 
 const app = new Vue({
     el: '#app',

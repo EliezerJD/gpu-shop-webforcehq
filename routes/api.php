@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login',[\App\Http\Controllers\API\Auth\AuthController::class,'login']);
+Route::group(['middleware' => ['auth:api']], function(){
+    Route::post('logout',[\App\Http\Controllers\API\Auth\AuthController::class,'logout']);
+});
 
 Route::get('users',[\App\Http\Controllers\Api\Users\UserController::class,'index'])->name('users.index');
 Route::get('users/{id}',[\App\Http\Controllers\API\Users\UserController::class,'show'])->name('users.show');
