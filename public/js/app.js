@@ -4087,6 +4087,7 @@ _routes_router__WEBPACK_IMPORTED_MODULE_1__["default"].beforeEach( /*#__PURE__*/
                 next({
                   name: 'default'
                 });
+                alert("You need to be logged in to proceed with the payment");
               }
             }
 
