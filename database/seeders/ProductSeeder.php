@@ -20,7 +20,16 @@ class ProductSeeder extends Seeder
         $product->description = 'Tarjeta de video de 32gb';
         $product->category_id = 1;
         $product->slug = 'evga-rtx-3090';
-        $product->image = '../../assets/rtx-3090-500.jpg';
+        $product->image = 'images/rtx-3090-500.jpg';
+        $product->save();
+
+        $product = new Product();
+        $product->name = 'EVGA RTX 3080';
+        $product->price = 2200;
+        $product->description = 'Tarjeta de video de 16gb';
+        $product->category_id = 1;
+        $product->slug = 'evga-rtx-3080';
+        $product->image = 'images/rtx-3080-500.jpg';
         $product->save();
 
     }

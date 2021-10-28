@@ -6,7 +6,7 @@
     <div class="related-item">
       <hr>
       <h6 class="pb-4">RELATED PRODUCTS</h6>
-      <MoreProducts :CardArray="sliceRelatedItems" />
+      
     </div>
 
   </div>
@@ -16,6 +16,7 @@
 import Title from '../components/InfoPage/Title.vue'
 import ProductDetails from '../components/InfoPage/ProductDetails.vue'
 import MoreProducts from '../components/ProductsPage/Card.vue'
+import ProductService from "../services/product";
 
 
 export default {
@@ -29,30 +30,23 @@ export default {
       relatedItems: []
     }
   },
-  created(){
-    this.information = this.info
-
-    if(this.information!= null){
-      this.relatedItems = this.bringItems
-    }else{
-      console.log('retornar a productos')
-    }
+    created(){
+      this.getOne();
     
     },
   computed: {
     info() {
       return this.$store.getters.infoLength
     },
-    bringItems() {
-      return this.$store.state.items
-    },
-    sliceRelatedItems(){
-      return this.relatedItems.slice(0 ,3)
-    }
   },
   methods: {
-    sendInfo(it, id) {
-     this.$store.commit('addtoInfo', it, id)
+    getOne(){
+      var split = this.$router.currentRoute.path.split('/');
+      ProductService.getProduct(split[2]).then((response) => {
+        this.information =  response.data;
+      }).catch((error => {
+        console.log(error)
+      }));
     }
   }
 }

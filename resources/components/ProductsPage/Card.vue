@@ -4,14 +4,15 @@
       <div v-for="item in CardArray" class="col-6 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-4 pb-3" :key="item.id">
           <div class="card">
             
-            <img :src=item.img alt="Card image cap">
+            <img :src=item.image alt="Card image cap">
+            
             <div class="overlay">
-              <button type="button" class="btn btn-outline-secondary btn-lg" @click="addtoCart(item)">Add to cart</button>
-              <router-link to="/Info"><button type="button" class="btn btn-outline-secondary btn-lg" @click="sendInfo(item)">Info</button></router-link>
+              <button type="button" class="btn btn-outline-secondary btn-lg" @click="addtoCart(item.id)">Add to cart</button>
+              <router-link :to="{name:'info',params:{arg:item.slug}}"><button type="button" class="btn btn-outline-secondary btn-lg">Info</button></router-link>
             </div>
             <div class="card-body">
               <br>
-              <h5 class="card-title">{{ item.title }}</h5>
+              <h5 class="card-title">{{ item.name }}</h5>
               <p class="card-text">${{ item.price }} USD</p>
             </div>
           </div>
@@ -22,16 +23,26 @@
 </template>
 
 <script>
+
+import CartService from "../../services/cart";
 export default {
   props: ['CardArray'],
   name: 'Card',
-  methods: {
-    addtoCart(it) {
-     this.$store.commit('inCart', it)
-    },
-    sendInfo(it) {
-     this.$store.commit('addtoInfo', it)
+  data(){
+    return {
     }
+  },
+  methods: {
+    addtoCart(id) {
+      let cartId = this.$store.getters.getCartId;
+      console.log(cartId, id)
+      CartService.addItem(cartId,{item_id:id}).then((response)=>{
+        alert("Producto agregado correntamente");
+        this.$store.dispatch('incrementCart',1);
+      }).catch((error)=>{
+        console.log(error);
+      });
+    },
   }
 }
 </script>

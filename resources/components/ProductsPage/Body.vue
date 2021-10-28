@@ -7,10 +7,10 @@
           <div class="dropdown">
             <button class="btn btn-light dropdown-toggle d-block d-lg-none d-xl-none" role="button" id="MenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</button>
             <div class="dropdown-menu" aria-labelledby="MenuLink">
-              <a class="dropdown-item" @click="sortI('all')">All</a>
-              <a class="dropdown-item" @click="sortI('RTX')">RTX</a>
-              <a class="dropdown-item" @click="sortI('GTX')">GTX</a>
-              <a class="dropdown-item" @click="sortI('Quadro')">Quadro</a>
+              <a class="dropdown-item" @click="sortProducts('all')">All</a>
+              <a class="dropdown-item" @click="sortProducts('1')">RTX</a>
+              <a class="dropdown-item" @click="sortProducts('2')">GTX</a>
+              <a class="dropdown-item" @click="sortProducts('3')">Quadro</a>
               <div class="dropdown-divider"></div>
               <div class="dropdown-divider"></div>
             </div>
@@ -24,10 +24,10 @@
               <div class="search-title">
                 <h4>Catagories</h4>
                 <br>
-                <h6 @click="sortI('all')">All</h6>
-                <h6 @click="sortI('RTX')">RTX</h6>
-                <h6 @click="sortI('GTX')">GTX</h6>
-                <h6 @click="sortI('Quadro')">Quadro</h6>
+                <h6 @click="sortProducts('all')">All</h6>
+                <h6 @click="sortProducts('1')">RTX</h6>
+                <h6 @click="sortProducts('2')">GTX</h6>
+                <h6 @click="sortProducts('3')">Quadro</h6>
                 <br><br><br>
                 <h4 class="search-title">Filter by</h4>
                 <br>
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import ProductService from "../../services/product";
+import CategoriesService from "../../services/categories";
 import Slider from './Slider.vue'
 import Card from './Card.vue'
 
@@ -70,15 +72,35 @@ export default {
     }
   },
   created(){
-    this.cards = this.it
+    this.getProducts;
+    this.getCategories;
   },
   computed: {
-    it(){
-      return this.$store.state.items
+    products(){
+      return this.$store.getters.products
+    },
+    getProducts(){
+      ProductService.getProducts().then((response) => {
+        //console.log(response.data.data);
+        //this.cards = response.data.data;
+        this.$store.dispatch('saveProducts',{
+          products:response.data.data
+        });
+        this.cards = this.products;
+      }).catch((error => {
+        console.log(error)
+      }));
     },
     slicedCards(){
       return this.cards.slice(0, this.showCards)
-    }
+    },
+    getCategories(){
+      CategoriesService.getCategories().then((response) => {
+        //
+      }).catch((error => {
+        console.log(error)
+      }));
+    },
   },
   methods: {
     incCardNumber() {
@@ -87,13 +109,14 @@ export default {
     valueSlider(value) {
       var x = value[0];
       var y = value[1];
-      this.cards = this.it.filter((e)=> x < e.price && e.price < y)
+      this.cards = this.products.filter((e)=> x < e.price && e.price < y)
     },
-    sortI(name){
-      if(name !== 'all'){
-        this.cards = this.it.filter((e) => e.type.match(name))
+    sortProducts(category){
+      if(category !== 'all'){
+        //console.log(this.it.filter((e) => e.name.match('EVGA RTX 3090')))
+        this.cards = this.products.filter((e) => e.category_id == category)
       }else{
-        this.cards = this.it
+        this.cards = this.products
       }
       
     }

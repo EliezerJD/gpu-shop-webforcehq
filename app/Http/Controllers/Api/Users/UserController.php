@@ -24,7 +24,7 @@ class UserController extends Controller{
         return $userService->profile();
     }
 
-    public function update(UserUpdateRequest $request, $id, UserService $userService): \Illuminate\Http\JsonResponse{
+    public function update(UserUpdate $request, $id, UserService $userService): \Illuminate\Http\JsonResponse{
         $validatedData = $request->validated();
         return $userService->update($validatedData,$id);
     }

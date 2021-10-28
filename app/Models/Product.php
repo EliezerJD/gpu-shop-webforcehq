@@ -11,6 +11,10 @@ class Product extends Model{
 	use HasFactory;
 
 	protected $table = 'products';
-  protected $primaryKey = 'id';
-  protected $fillable = ['name','price','description','category_id','slug','image', 'status'];
+  	protected $primaryKey = 'id';
+  	protected $fillable = ['name','price','description','category_id','slug','image', 'status'];
+
+  	public static function issetSlug($slug){
+        return Product::where('slug',$slug)->first();
+    }
 }

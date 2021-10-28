@@ -37,7 +37,7 @@
       <div class="row justify-content-between">
         <div class="col-xl-7 col-lg-6 col-md-6 col-sm-6 col-6">
           <div class="tiny-footer">
-            <p>Copyright © All Rights Reserved 202 </p>
+            <p>Copyright © All Rights Reserved 2021 </p>
           </div>
         </div>
         <div class="col-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 text-right">

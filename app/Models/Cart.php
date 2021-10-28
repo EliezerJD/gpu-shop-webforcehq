@@ -37,7 +37,7 @@ class Cart extends Model{
                 products.id,
                 products.name,
                 products.slug,
-                products.type,
+                products.category_id,
                 products.image,
                 item_carts.price,
                 sum(item_carts.amount) amount,

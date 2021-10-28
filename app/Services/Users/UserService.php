@@ -47,4 +47,9 @@ class UserService implements \App\Services\Service{
         return response()->json('User Not Found',Response::HTTP_NOT_FOUND);
     }
 
+    public function profile(): UserResource{
+        $user = Auth::user();
+        return new UserResource($user);
+    }
+
 }
