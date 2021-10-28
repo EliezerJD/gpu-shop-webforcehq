@@ -33,6 +33,7 @@ router.beforeEach(async (to,from,next) => {
             next();
         }else{
             next({name:'default'});
+            alert("You need to be logged in to proceed with the payment");
         }
     }
 
