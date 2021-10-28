@@ -23,7 +23,7 @@ class ProductController extends Controller{
         return $productService->getOne($id);
     }
 
-    public function update(ProductUpdateRequest $request,ProductService $productService,$id): \Illuminate\Http\JsonResponse{
+    public function update(ProductUpdate $request,ProductService $productService,$id): \Illuminate\Http\JsonResponse{
         $validatedData  = $request->validated();
         return $productService->update($validatedData,$id);
     }

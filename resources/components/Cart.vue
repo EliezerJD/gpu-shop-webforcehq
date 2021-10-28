@@ -6,35 +6,48 @@
         <hr>
 
         <transition name="fade">
-          <div v-if="this.cartContent.length === 0" class="text-center font-italic">
+          <div v-if="cartCount === 0" class="text-center font-italic">
             Your cart is empty, try to add products.
           </div>
         </transition>
 
         <transition-group name="fade">
-          <div class="row" v-for="thing in cartContent" v-bind:key="thing.id">
+          <div class="row" v-for="item in this.cart.items" v-bind:key="item.id">
             <div class="col4 col-xl-4 col-lg-4 col-md-4 col-sm-4">
-              <img :src="thing.img" style="width: 90px;">
+              <img :src="item.image" style="width: 90px;">
             </div>
             <div class="col6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-              <h4>{{ thing.title }}</h4>
-              <h6>${{ thing.price }} USD</h6>
+              <h4>{{ item.name }}</h4>
+              <h6>Amount: {{ item.amount }}</h6>
+              <h5>${{ item.price }} USD</h5>
             </div>
             <div class="col2 col-xl-2 col-lg-2 col-md-2 col-sm-2 pt-4">
-              <span class="remove-btn" @click="removeThing(thing.id)">remove</span>
+              <span class="remove-btn" @click="deleteItem(item)">remove</span>
             </div>
           </div>
         </transition-group >
 
-        <hr v-if="this.cartContent.length !== 0">
-        <div class="row justify-content-between" style="background:#7dcf85;padding:10px 10px 10px 10px" v-if="this.cartPrice != undefined">
+       
+        <hr>
+        <div class="row justify-content-between" style="background:#7dcf85;padding:10px 10px 10px 10px" v-if="cartCount > 0">
           <div class="flex-column pl-3">
             <h4>Total</h4>
           </div>
           <div class="flex-column pr-3">
-            <h4>${{ cartPrice }}</h4>
+            <h4>${{ this.cart.total }} USD</h4>
+          </div>
+          <br>
+          
+        </div>
+        <div class="container">
+          <div class="row justify-content-center">
+          <div class="col-md-4">
+            <button  @click="checkout()" type="button" class="btn btn-info">Checkout</button>
           </div>
         </div>
+        </div>
+        
+        
       </div>
     </div>
 
@@ -43,23 +56,22 @@
 </template>
 
 <script>
-
+import CartService from '../services/cart';
 
 export default {
   name: 'Cart',
   data() {
     return {
       cClass: 'cart',
-      modalClass: 'modal off'
+      modalClass: 'modal off',
+      cartId: this.$store.getters.getCartId,
+      cart : {}
     }
   },
   computed:{
-    cartContent(){
-      return this.$store.getters.itemsNumber;
+    cartCount() {
+      return this.$store.getters.itemsCount;
     },
-    cartPrice() {
-      //return this.$store.getters.totalPrice
-    }
   },
   methods: {
     cartON() {
@@ -69,12 +81,31 @@ export default {
       }else{
         this.cClass = 'cart on'
         this.modalClass = 'modal'
+        this.getCart();
       }
     },
-    removeThing(id){
-      this.$store.commit('outCart',id)
+    getCart() {
+      CartService.getCart(this.cartId).then((response)=>{
+        this.cart = response.data;
+      }).catch((error)=>{
+        console.log(error);
+      });
+    },
+    deleteItem(item) {
+      let cartId = this.$store.getters.getCartId;
+      CartService.removeItem(cartId, item).then(response=>{
+        this.$store.dispatch('decrementCart',item.amount);
+        this.getCart();
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    checkout(){
+      this.$router.push({name: 'checkout'});
+      this.cClass = 'cart'
+      this.modalClass = 'modal off'
+    }
   }
-}
 }
 </script>
 

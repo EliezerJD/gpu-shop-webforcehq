@@ -6,7 +6,6 @@
         <div class="dropdown-menu hb" aria-labelledby="navd">
           <router-link class="dropdown-item" to="/">Home</router-link>
           <router-link class="dropdown-item" to="/products">Products</router-link>
-          <router-link class="dropdown-item" to="/contact">Contact us</router-link>
         </div>
       </div>
       <!--Logo-->
@@ -17,21 +16,22 @@
       <span class="navbar-item bc d-none d-xl-block d-lg-block py-0">
         <router-link class="pl-5" to="/">Home</router-link>
         <router-link class="px-5" to="/products">Products</router-link>
-        <router-link to="/contact">Contact us</router-link>
       </span>
 
       <p class="navbar-item ml-auto">
         <div class="bag" @click="openCart">
           <img :src="require('../assets/cart.svg').default" class="pb-1">
-            <span class="mb-3" v-if="this.bagItemscount >= 0">{{ bagItemscount }}</span>
+            <span class="mb-3" v-if="cartCount >= 0">{{ cartCount }}</span>
         </div>
         <div class="user">
-          <h5 v-if="!userIsLogin" style="cursor: pointer" data-toggle="modal" data-target="#userModal">Sign In</h5>
+          <h5 v-if="userIsGuest" style="cursor: pointer" data-toggle="modal" data-target="#userModal">Sign In</h5>
+
           
           <div v-if="userIsLogin" class="dropdown">
-            <h5 class="dropdown-toggle user" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user}}</h5>
+            <h5 class="dropdown-toggle user" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{user.name}}</h5>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" @click="logout" >Logout</a>
+              <a v-if="userIsAdmin" class="dropdown-item" @click="manage">Manage</a>
+              <a class="dropdown-item" @click="logout">Logout</a>
             </div>
           </div>
         </div>
@@ -59,12 +59,12 @@
                     Remember me
                   </label>
               </div>
-              <button type="button" @click="login" class="btn-xl btn-success mt-3">Sign in</button>
+              <button type="button" v-if="userIsGuest" @click="login" class="btn-xl btn-success mt-3">Sign in</button>
             </form>
           </div>
           <div class="modal-footer">
             <a class="dropdown-item" href="#">Forgot password?</a>
-            <a class="dropdown-item text-right" href="#">Sign up</a>
+            <a class="dropdown-item text-right" href="#">Register</a>
           </div>
         </div>
       </div>
@@ -77,6 +77,7 @@
 <script>
 import Cart from '../components/Cart.vue'
 import AuthService from '../services/auth';
+import CartService from '../services/cart';
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
 
@@ -91,9 +92,12 @@ export default {
   components: {
     Cart
   },
+  created() {
+    this.getCart;
+  },
   computed: {
-    bagItemscount() {
-      return this.$store.getters.itemsNumber
+    cartCount() {
+      return this.$store.getters.itemsCount;
     },
     userIsLogin(){
       return this.$store.getters.isLogin;
@@ -102,6 +106,21 @@ export default {
       //console.log("aca")
       return this.$store.getters.getUser;
     },
+    userIsAdmin(){
+      //console.log(this.$store.getters.isUserAdmin);
+      return this.$store.getters.isUserAdmin;
+    },
+    userIsGuest() {
+      return this.$store.getters.isGuest;
+    },
+    async getCart(){
+   
+        let haveCart = this.$store.getters.haveCart;
+        if (!haveCart) {
+          await this.$store.dispatch('createCart');
+        }
+        
+    }
   },
   methods: {
     openCart() {
@@ -114,25 +133,33 @@ export default {
           password:this.password
         });
         if(response.token){
-          this.$store.dispatch('saveDataUser',{
-            token:response.token,
-            user:response.user.name
+
+          this.$store.dispatch('saveToken',{
+            token: response.token,
           });
           this.$refs.modal.click();
+          this.reloadProfile();
         }
         
       }catch (error) {
         console.log(error);
       }
     },
+    manage(){
+      this.$router.push({name: 'admin'});
+    },
     async logout(){
       try {
         let response = await AuthService.logout();
         this.$store.dispatch('deleteDataUser');
-          //this.$store.dispatch('cart/clearCart');
+          this.$store.dispatch('clearCart');
+          this.$router.push({name: 'default'});
       }catch (error) {
         console.log(error);
       }
+    },
+    async reloadProfile(){
+      await this.$store.dispatch('profile');
     }
   }
 }

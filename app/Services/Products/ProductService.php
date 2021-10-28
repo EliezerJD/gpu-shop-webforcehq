@@ -14,7 +14,7 @@ class ProductService implements Service{
 
     public function getAll(): ProductCollection{
         $products = Product::where('status',1)
-            ->orderBy('id','DESC')
+            ->orderBy('id','ASC')
             ->paginate(25);
         return new ProductCollection($products);
     }

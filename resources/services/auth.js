@@ -31,5 +31,18 @@ export default {
                     reject(error)
                 })
         })
-    }
+    }, 
+
+    profile() {
+        return new Promise((resolve , reject)=>{
+           ApiConnection().get('/api/users/profile')
+               .then((response)=>{
+                   resolve(response);
+               }).catch((error)=>{
+                   localStorage.removeItem('token');
+                   reject(error);
+               });
+        });
+    },
+
 }

@@ -13,6 +13,7 @@ class ProductResource extends JsonResource{
             'slug'=>$this->slug,
             'price'=>$this->price,
             'description'=>$this->description,
+            'category_id'=>$this->category_id,
             'image'=>$this->image,
             'routes'=>[
                 'self'=>route('products.show',$this->slug)

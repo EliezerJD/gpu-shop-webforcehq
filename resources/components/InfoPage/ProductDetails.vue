@@ -1,23 +1,22 @@
 <template>
   <div>
-    <div class="row mb-5" v-for="it in information" :key="it.id">
+    <div class="row mb-5" v-for="item in information" :key="item.id">
       <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
-        <img class="img-fluid" :src="it.img">
+        <img class="img-fluid" :src="'../'+item.image">
       </div>
 
       <div class="col6 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-flex align-items-center justify-content-start">
         <div class="info pt-xl-0 pt-lg-0 pt-5">
-          <h1 class="font-weight-bold text-uppercase pt-3">{{ it.title }}</h1>
-          <h4>${{ it.price }} USD</h4>
-          <p>{{ it.desc }}</p>
+          <h1 class="font-weight-bold text-uppercase pt-3">{{ item.name }}</h1>
+          <h4>${{ item.price }} USD</h4>
           <br><br>
           <div class="control number text-center">
             <button class="decrement-button" @click="dec" style="border-right: 0.2px solid lightgrey;float:left;margin-right: 11px;">−</button>
-            <span>{{ quan }}</span>
+            <span>{{ amount }}</span>
             <button class="increment-button" @click="inc" style="border-left: 0.2px solid lightgrey;margin-left: 10px;">+</button>
             <br><br>
           </div>
-          <button class="add-to-cart-button" @click="addtoCart(it, it.id)">ADD TO CART</button>
+          <button class="add-to-cart-button" @click="addtoCart(item.id)">ADD TO CART</button>
         </div>
       </div>
     </div>
@@ -25,27 +24,34 @@
 </template>
 
 <script>
+import CartService from "../../services/cart";
 export default {
   props: ['information'],
   name: 'InfoBox',
   data() {
     return {
-      quan: 1,
+      amount: 1,
     }
   },
   methods:{
     inc() { // Info box Incrememnt button
-      if (this.quan <= 8 )
-       return this.quan ++
+      if (this.amount <= 8 )
+       return this.amount ++
     },
     dec() { // Info box Decrememnt button
-      if (this.quan >= 2)
-       return this.quan --
+      if (this.amount >= 2)
+       return this.amount --
     },
-    addtoCart(it, id) { // Info box Add to cart button
-      for (var i = 0; i < this.quan; i++) {
-        this.$store.commit('inCart', it, id)
+    addtoCart(id) {
+      let cartId = this.$store.getters.getCartId;
+      for (var i = 0; i < this.amount; i++) {
+        CartService.addItem(cartId,{item_id:id}).then((response)=>{
+          this.$store.dispatch('incrementsCart', 1);
+        }).catch((error)=>{
+          console.log(error);
+        });
       }
+      alert("Producto agregado correntamente");
     },
   }
 }
